@@ -130,7 +130,7 @@ def get_dealer_details(request, dealer_id):
 
 
 def add_review(request):
-    if request.user.is_anonymous is False:
+    if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
             response = post_review(data)
@@ -139,7 +139,7 @@ def add_review(request):
             print(f"Unexpected {err=}, {type(err)=}")
             return JsonResponse({
                 "status": 401,
-                "message": "Error in posting review"
+                f"message": "Error in posting review - {err}"
             })
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
